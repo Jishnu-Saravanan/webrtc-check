@@ -16,7 +16,13 @@
 # webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer
+import av
+import cv2
 
 st.title("Real-time Camera Feed")
 
-webrtc_streamer(key="example")
+def callback(frame:av.VideoFrame) ->av.VideoFrame:
+  img = frame.to_ndarry(format = "bgr24")
+  return av.VideoFrame.from_ndarray(img,format = "bgr24")
+  
+webrtc_streamer(key="example",video_frame_callback=callback)
